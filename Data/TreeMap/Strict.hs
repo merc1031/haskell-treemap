@@ -38,18 +38,7 @@ import qualified Data.NonNull as NonNull
 import qualified Data.Strict.Maybe as Strict
 
 -- @Data.Strict@ orphan instances
-deriving instance Data x => Data (Strict.Maybe x)
 deriving instance Typeable Strict.Maybe
-instance Semigroup x => Semigroup (Strict.Maybe x) where
-	Strict.Just x <> Strict.Just y = Strict.Just (x <> y)
-	x <> Strict.Nothing = x
-	Strict.Nothing <> y = y
-instance Semigroup x => Monoid (Strict.Maybe x) where
-	mempty  = Strict.Nothing
-	mappend = (<>)
-instance NFData x => NFData (Strict.Maybe x) where
-	rnf Strict.Nothing  = ()
-	rnf (Strict.Just x) = rnf x
 instance Applicative Strict.Maybe where
 	pure = Strict.Just
 	Strict.Just f <*> Strict.Just x = Strict.Just (f x)
@@ -61,7 +50,7 @@ instance Alternative Strict.Maybe where
 -- * Type 'TreeMap'
 newtype TreeMap k x
  =      TreeMap (Map k (Node k x))
- deriving (Data, Eq, Ord, Show, Typeable)
+ deriving (Eq, Ord, Show, Typeable)
 
 instance (Ord k, Semigroup v) => Semigroup (TreeMap k v) where
 	(<>) = union (<>)
@@ -96,7 +85,7 @@ data Node k x
  {   node_size        :: !Int -- ^ The number of non-'Strict.Nothing' 'node_value's reachable from this 'Node'.
  ,   node_value       :: !(Strict.Maybe x) -- ^ Some value, or 'Strict.Nothing' if this 'Node' is intermediary.
  ,   node_descendants :: !(TreeMap k x) -- ^ Descendants 'Node's.
- } deriving (Data, Eq, Ord, Show, Typeable)
+ } deriving (Eq, Ord, Show, Typeable)
 
 instance (Ord k, Semigroup v) => Semigroup (Node k v) where
 	(<>)

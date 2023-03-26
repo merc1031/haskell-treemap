@@ -29,7 +29,7 @@ data Zipper k a
  =   Zipper
  {   zipper_path :: [Cursor k a]
  ,   zipper_curr :: TreeMap k a
- } deriving (Data, Eq, Show, Typeable)
+ } deriving (Eq, Show, Typeable)
 
 zipper :: TreeMap k a -> Zipper k a
 zipper = Zipper []
@@ -51,7 +51,7 @@ data Cursor k a
  {   cursor_precedings :: TreeMap k a
  ,   cursor_self       :: (k, Node k a)
  ,   cursor_followings :: TreeMap k a
- } deriving (Data, Eq, Show, Typeable)
+ } deriving (Eq, Show, Typeable)
 
 -- * Axis
 type Axis k a = Zipper k a -> [Zipper k a]
